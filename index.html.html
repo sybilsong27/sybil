@@ -1,0 +1,662 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>教育研究实验</title>
+    <style>
+        body {
+            font-family: 'Arial', sans-serif;
+            line-height: 1.6;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            color: #333;
+        }
+        h1 {
+            text-align: center;
+            color: #2c3e50;
+        }
+        .form-section {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+        input, select {
+            padding: 8px;
+            width: 100%;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .radio-group {
+            margin: 15px 0;
+        }
+        .radio-option {
+            display: inline-block;
+            margin-right: 25px;
+        }
+        .radio-option input {
+            width: auto;
+            margin-right: 5px;
+        }
+        button {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+            margin: 10px 5px;
+        }
+        button:hover {
+            background: #2980b9;
+        }
+        .delete-btn {
+            background: #e74c3c;
+            margin-left: 10px;
+        }
+        .delete-btn:hover {
+            background: #c0392b;
+        }
+        .experiment-container {
+            margin: 20px 0;
+        }
+        .experiment-box {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .question {
+            margin: 20px 0;
+            display: flex;
+            align-items: center;
+        }
+        .question-title {
+            width: 80px;
+            font-weight: bold;
+        }
+        .rating-container {
+            display: flex;
+            align-items: center;
+        }
+        .rating-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin: 0 10px;
+        }
+        .rating-circle {
+            border-radius: 50%;
+            cursor: pointer;
+            border: 2px solid transparent;
+            margin-bottom: 5px;
+        }
+        /* 不同实验的圆圈颜色 */
+        .exp-a .rating-circle { background-color: #8A2BE2; } /* 紫色 */
+        .exp-b .rating-circle { background-color: #FFD700; } /* 黄色 */
+        .exp-c .rating-circle { background-color: #7CDB05; } /* 嫩绿色 */
+        .exp-d .rating-circle { background-color: #0AD5E7; } /* 青色 */
+        
+        .rating-circle.selected {
+            border-color: #000;
+        }
+        .rating-number {
+            font-size: 14px;
+        }
+        .nav-buttons {
+            text-align: center;
+            margin-top: 30px;
+        }
+        .hidden {
+            display: none;
+        }
+        #success-page {
+            text-align: center;
+            padding: 50px 0;
+        }
+        .success-buttons {
+            margin-top: 20px;
+        }
+        #data-page {
+            padding: 20px;
+        }
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        .data-table th, .data-table td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+        .data-table th {
+            background-color: #f2f2f2;
+        }
+        .data-table tr:nth-child(even) {
+            background-color: #f9f9f9;
+        }
+        .select-all-container {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .select-all-btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .delete-selected-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 8px 15px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+        }
+        .select-all-btn:hover {
+            background: #2980b9;
+        }
+        .delete-selected-btn:hover {
+            background: #c0392b;
+        }
+        .data-download-btn {
+            margin-top: 20px;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <!-- 信息收集页面 -->
+    <div id="info-page" class="form-section">
+        <h1>教育研究实验</h1>
+        <label for="id">编号:</label>
+        <input type="text" id="id" required>
+        
+        <label for="gender">性别:</label>
+        <select id="gender" required>
+            <option value="">请选择</option>
+            <option value="a">女</option>
+            <option value="b">男</option>
+        </select>
+        
+        <div class="radio-group">
+            <label>刻板度:</label>
+            <div class="radio-option">
+                <input type="radio" name="option" value="a" required> A. 高
+            </div>
+            <div class="radio-option">
+                <input type="radio" name="option" value="b"> B. 低
+            </div>
+        </div>
+        
+        <button id="start-btn">开始实验</button>
+    </div>
+
+    <!-- 实验a(职业)页面 -->
+    <div id="exp-a-page" class="hidden exp-a">
+        <h1>职业</h1>
+        <div class="experiment-container">
+            <div class="experiment-box">
+                <div id="exp-a-questions"></div>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-home">首页</button>
+            <button class="nav-a" style="background:#3498db">A</button>
+            <button class="nav-b">B</button>
+            <button class="nav-c">C</button>
+            <button class="nav-d">D</button>
+        </div>
+    </div>
+
+    <!-- 实验b(活动)页面 -->
+    <div id="exp-b-page" class="hidden exp-b">
+        <h1>活动</h1>
+        <div class="experiment-container">
+            <div class="experiment-box">
+                <div id="exp-b-questions"></div>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-home">首页</button>
+            <button class="nav-a">A</button>
+            <button class="nav-b" style="background:#3498db">B</button>
+            <button class="nav-c">C</button>
+            <button class="nav-d">D</button>
+        </div>
+    </div>
+
+    <!-- 实验c(特质)页面 -->
+    <div id="exp-c-page" class="hidden exp-c">
+        <h1>特质</h1>
+        <div class="experiment-container">
+            <div class="experiment-box">
+                <div id="exp-c-questions"></div>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-home">首页</button>
+            <button class="nav-a">A</button>
+            <button class="nav-b">B</button>
+            <button class="nav-c" style="background:#3498db">C</button>
+            <button class="nav-d">D</button>
+        </div>
+    </div>
+
+    <!-- 实验d(外貌)页面 -->
+    <div id="exp-d-page" class="hidden exp-d">
+        <h1>外貌</h1>
+        <div class="experiment-container">
+            <div class="experiment-box">
+                <div id="exp-d-questions"></div>
+            </div>
+        </div>
+        <div class="nav-buttons">
+            <button class="nav-home">首页</button>
+            <button class="nav-a">A</button>
+            <button class="nav-b">B</button>
+            <button class="nav-c">C</button>
+            <button class="nav-d" style="background:#3498db">D</button>
+            <button id="submit-btn">提交</button>
+        </div>
+    </div>
+
+    <!-- 提交成功页面 -->
+    <div id="success-page" class="hidden">
+        <h1>提交成功!</h1>
+        <p>感谢您参与本次教育研究实验。</p>
+        <div class="success-buttons">
+            <button id="download-btn">下载数据</button>
+            <button id="all-data-btn">全部数据</button>
+            <button id="return-home">返回首页</button>
+        </div>
+    </div>
+
+    <!-- 全部数据页面 -->
+    <div id="data-page" class="hidden">
+        <h1>全部测试数据</h1>
+        <div class="select-all-container">
+            <button id="select-all-btn" class="select-all-btn">全选</button>
+            <button id="delete-selected-btn" class="delete-selected-btn">删除选中</button>
+        </div>
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>选择</th>
+                    <th>编号</th>
+                    <th>性别</th>
+                    <th>刻板度</th>
+                    <th>职业-女</th>
+                    <th>职业-男</th>
+                    <th>活动-女</th>
+                    <th>活动-男</th>
+                    <th>特质-女</th>
+                    <th>特质-男</th>
+                    <th>外貌-女</th>
+                    <th>外貌-男</th>
+                </tr>
+            </thead>
+            <tbody id="data-table-body"></tbody>
+        </table>
+        <div class="data-download-btn">
+            <button id="batch-download-btn">下载选中数据</button>
+        </div>
+        <div class="nav-buttons">
+            <button id="back-to-success">返回</button>
+        </div>
+    </div>
+
+    <script>
+        // 存储所有收集的数据
+        const experimentData = {
+            info: {},
+            exp: {
+                aFemale: {}, aMale: {},
+                bFemale: {}, bMale: {},
+                cFemale: {}, cMale: {},
+                dFemale: {}, dMale: {}
+            }
+        };
+
+        // 存储所有用户数据
+        let allUserData = JSON.parse(localStorage.getItem('allUserData')) || [];
+
+        // 页面元素
+        const pages = {
+            info: document.getElementById('info-page'),
+            expA: document.getElementById('exp-a-page'),
+            expB: document.getElementById('exp-b-page'),
+            expC: document.getElementById('exp-c-page'),
+            expD: document.getElementById('exp-d-page'),
+            success: document.getElementById('success-page'),
+            data: document.getElementById('data-page')
+        };
+
+        // 生成评分圆圈
+        function createRatingCircles(questionId, questionTitle) {
+            const container = document.createElement("div");
+            container.className = "question";
+            
+            const title = document.createElement("div");
+            title.className = "question-title";
+            title.textContent = questionTitle + ":";
+            container.appendChild(title);
+            
+            const ratingContainer = document.createElement("div");
+            ratingContainer.className = "rating-container";
+            
+            for (let i = 1; i <= 5; i++) {
+                const ratingItem = document.createElement("div");
+                ratingItem.className = "rating-item";
+                
+                const circle = document.createElement("div");
+                circle.className = "rating-circle";
+                circle.style.width = (20 + i * 6) + "px";
+                circle.style.height = (20 + i * 6) + "px";
+                circle.dataset.value = i;
+                circle.dataset.questionId = questionId;
+                
+                circle.addEventListener("click", function() {
+                    // 移除同一问题的所有选中状态
+                    const circles = document.querySelectorAll(`[data-question-id="${questionId}"]`);
+                    circles.forEach(c => c.classList.remove("selected"));
+                    
+                    // 添加选中状态
+                    this.classList.add("selected");
+                    
+                    // 保存选择
+                    experimentData.exp[questionId] = this.dataset.value;
+                });
+                
+                const number = document.createElement("div");
+                number.className = "rating-number";
+                number.textContent = i;
+                
+                ratingItem.appendChild(circle);
+                ratingItem.appendChild(number);
+                ratingContainer.appendChild(ratingItem);
+            }
+            
+            container.appendChild(ratingContainer);
+            return container;
+        }
+
+        // 初始化实验问题
+        function initExperimentQuestions() {
+            // 实验a(职业) - 紫色
+            const expAQuestions = document.getElementById("exp-a-questions");
+            expAQuestions.innerHTML = "";
+            expAQuestions.appendChild(createRatingCircles("aFemale", "女"));
+            expAQuestions.appendChild(createRatingCircles("aMale", "男"));
+            
+            // 实验b(活动) - 黄色
+            const expBQuestions = document.getElementById("exp-b-questions");
+            expBQuestions.innerHTML = "";
+            expBQuestions.appendChild(createRatingCircles("bFemale", "女"));
+            expBQuestions.appendChild(createRatingCircles("bMale", "男"));
+            
+            // 实验c(特质) - 嫩绿色
+            const expCQuestions = document.getElementById("exp-c-questions");
+            expCQuestions.innerHTML = "";
+            expCQuestions.appendChild(createRatingCircles("cFemale", "女"));
+            expCQuestions.appendChild(createRatingCircles("cMale", "男"));
+            
+            // 实验d(外貌) - 青色
+            const expDQuestions = document.getElementById("exp-d-questions");
+            expDQuestions.innerHTML = "";
+            expDQuestions.appendChild(createRatingCircles("dFemale", "女"));
+            expDQuestions.appendChild(createRatingCircles("dMale", "男"));
+        }
+
+        // 导航函数
+        function showPage(pageToShow) {
+            Object.values(pages).forEach(page => {
+                page.classList.add("hidden");
+            });
+            pageToShow.classList.remove("hidden");
+        }
+
+        // 保存数据到本地存储
+        function saveDataToLocal() {
+            // 合并当前用户数据
+            const userData = {
+                id: experimentData.info.id,
+                gender: experimentData.info.gender,
+                option: experimentData.info.option,
+                ...experimentData.exp
+            };
+            
+            // 添加到所有用户数据
+            allUserData.push(userData);
+            localStorage.setItem('allUserData', JSON.stringify(allUserData));
+        }
+
+        // 生成数据表格
+        function generateDataTable() {
+            const tableBody = document.getElementById('data-table-body');
+            tableBody.innerHTML = '';
+            
+            allUserData.forEach((user, index) => {
+                const row = document.createElement('tr');
+                
+                // 添加选择框
+                const selectCell = document.createElement('td');
+                const checkbox = document.createElement('input');
+                checkbox.type = 'checkbox';
+                checkbox.className = 'data-checkbox';
+                checkbox.dataset.index = index;
+                selectCell.appendChild(checkbox);
+                row.appendChild(selectCell);
+                
+                // 添加基本信息
+                row.appendChild(createCell(user.id));
+                row.appendChild(createCell(user.gender === 'a' ? '女' : '男'));
+                row.appendChild(createCell(user.option === 'a' ? '高' : '低'));
+                
+                // 添加实验数据
+                const expFields = ['aFemale', 'aMale', 'bFemale', 'bMale', 'cFemale', 'cMale', 'dFemale', 'dMale'];
+                
+                expFields.forEach(field => {
+                    row.appendChild(createCell(user[field] || ''));
+                });
+                
+                tableBody.appendChild(row);
+            });
+        }
+
+        function createCell(text) {
+            const cell = document.createElement('td');
+            cell.textContent = text;
+            return cell;
+        }
+
+        // 下载数据为CSV
+        function downloadDataAsCSV(data, filename) {
+            // 创建CSV数据
+            let csvContent = "data:text/csv;charset=utf-8,";
+            
+            // 添加标题行
+            const headers = ["编号", "性别", "刻板度",
+                "职业-女", "职业-男", 
+                "活动-女", "活动-男",
+                "特质-女", "特质-男",
+                "外貌-女", "外貌-男"
+            ];
+            csvContent += headers.join(",") + "\n";
+            
+            // 添加数据行
+            data.forEach(user => {
+                const dataRow = [
+                    user.id,
+                    user.gender,
+                    user.option,
+                    user.aFemale || "",
+                    user.aMale || "",
+                    user.bFemale || "",
+                    user.bMale || "",
+                    user.cFemale || "",
+                    user.cMale || "",
+                    user.dFemale || "",
+                    user.dMale || ""
+                ];
+                
+                csvContent += dataRow.join(",") + "\n";
+            });
+            
+            // 创建下载链接
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", filename);
+            document.body.appendChild(link);
+            
+            // 触发下载
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // 删除选中的数据
+        function deleteSelectedData() {
+            const checkboxes = document.querySelectorAll('.data-checkbox:checked');
+            if (checkboxes.length === 0) {
+                alert("请至少选择一条数据");
+                return;
+            }
+            
+            if (!confirm(`确定要删除选中的${checkboxes.length}条数据吗？`)) {
+                return;
+            }
+            
+            // 获取要保留的数据索引
+            const selectedIndices = Array.from(checkboxes).map(checkbox => parseInt(checkbox.dataset.index));
+            allUserData = allUserData.filter((_, index) => !selectedIndices.includes(index));
+            
+            // 更新本地存储
+            localStorage.setItem('allUserData', JSON.stringify(allUserData));
+            
+            // 刷新表格
+            generateDataTable();
+            
+            alert(`已删除${selectedIndices.length}条数据`);
+        }
+
+        // 全选/取消全选
+        function toggleSelectAll() {
+            const checkboxes = document.querySelectorAll('.data-checkbox');
+            const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+            
+            checkboxes.forEach(checkbox => {
+                checkbox.checked = !allChecked;
+            });
+        }
+
+        // 事件监听
+        document.getElementById('start-btn').addEventListener("click", function() {
+            // 保存基本信息
+            experimentData.info = {
+                id: document.getElementById("id").value,
+                gender: document.getElementById("gender").value,
+                option: document.querySelector("input[name='option']:checked").value
+            };
+            
+            initExperimentQuestions();
+            showPage(pages.expA);
+        });
+
+        document.getElementById('submit-btn').addEventListener("click", function() {
+            // 检查是否所有问题都已回答
+            const requiredFields = ['aFemale', 'aMale', 'bFemale', 'bMale', 'cFemale', 'cMale', 'dFemale', 'dMale'];
+            
+            const allAnswered = requiredFields.every(field => experimentData.exp[field]);
+            
+            if (allAnswered) {
+                saveDataToLocal();
+                showPage(pages.success);
+            } else {
+                alert("请完成所有评分问题");
+            }
+        });
+
+        document.getElementById('download-btn').addEventListener("click", function() {
+            // 只下载当前用户数据
+            const currentUserData = [{
+                id: experimentData.info.id,
+                gender: experimentData.info.gender,
+                option: experimentData.info.option,
+                ...experimentData.exp
+            }];
+            
+            const filename = `${experimentData.info.id}_数据.csv`;
+            downloadDataAsCSV(currentUserData, filename);
+        });
+
+        document.getElementById('all-data-btn').addEventListener("click", function() {
+            generateDataTable();
+            showPage(pages.data);
+        });
+
+        document.getElementById('return-home').addEventListener("click", function() {
+            showPage(pages.info);
+        });
+
+        document.getElementById('back-to-success').addEventListener("click", function() {
+            showPage(pages.success);
+        });
+
+        document.getElementById('select-all-btn').addEventListener("click", toggleSelectAll);
+
+        document.getElementById('delete-selected-btn').addEventListener("click", deleteSelectedData);
+
+        document.getElementById('batch-download-btn').addEventListener("click", function() {
+            const checkboxes = document.querySelectorAll('.data-checkbox:checked');
+            if (checkboxes.length === 0) {
+                alert("请至少选择一条数据");
+                return;
+            }
+            
+            const selectedData = [];
+            checkboxes.forEach(checkbox => {
+                const index = checkbox.dataset.index;
+                selectedData.push(allUserData[index]);
+            });
+            
+            downloadDataAsCSV(selectedData, "接纳度实验.csv");
+        });
+
+        // 导航按钮事件
+        document.querySelectorAll('.nav-home').forEach(btn => {
+            btn.addEventListener('click', () => showPage(pages.info));
+        });
+        document.querySelectorAll('.nav-a').forEach(btn => {
+            btn.addEventListener('click', () => showPage(pages.expA));
+        });
+        document.querySelectorAll('.nav-b').forEach(btn => {
+            btn.addEventListener('click', () => showPage(pages.expB));
+        });
+        document.querySelectorAll('.nav-c').forEach(btn => {
+            btn.addEventListener('click', () => showPage(pages.expC));
+        });
+        document.querySelectorAll('.nav-d').forEach(btn => {
+            btn.addEventListener('click', () => showPage(pages.expD));
+        });
+
+        // 初始化显示信息页面
+        showPage(pages.info);
+    </script>
+</body>
+</html>
