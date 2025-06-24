@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>假装游戏对幼儿抑制控制的影响研究</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            background-color: #f5f5f5;
+            padding: 20px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 800px;
+        }
+        .button {
+            padding: 15px 25px;
+            font-size: 16px;
+            background-color: #2196F3; /* 蓝色 */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: all 0.3s;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        .button:hover {
+            background-color: #0b7dda; /* 深蓝色 */
+            transform: translateY(-2px);
+            box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+        }
+        .button.single {
+            grid-column: 2; /* 单独按钮居中 */
+        }
+        h1 {
+            margin-bottom: 40px;
+            color: #333;
+            text-align: center;
+        }
+        @media (max-width: 600px) {
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .button.single {
+                grid-column: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <h1>假装游戏对幼儿抑制控制的影响研究</h1>
+    
+    <div class="grid；-container">
+        <h2>·持续注意</h2>
+        <!-- 第一行：3个按钮 -->
+        <button class="button" onclick="window.location.href='../2.1持续性注意/1视听一致.html'">视听一致</button>
+        <button class="button" onclick="window.location.href='../2.2持续性注意/2仅听觉.html'">仅视觉</button>
+        <button class="button" onclick="window.location.href='../2.3持续性注意/3非视听一致.html'">非视听一致</button>
+        <h2>·言语能力</h2>
+        <!-- 第二行：单独1个按钮居中 -->
+        <button class="button" onclick="window.location.href='../3.1PPVT-R/言语能力.html'">言语能力</button>
+        <h2>·抑制控制</h2>
+        <!-- 第三行：4个按钮 -->
+        <button class="button" onclick="window.location.href='../4.1昼夜stroop/昼夜stroop.html'">昼夜</button>
+        <button class="button" onclick="window.location.href='../4.2小鱼flanker/小鱼flanker.html'">小鱼</button>
+        <button class="button" onclick="window.location.href='../4.3少即是多/少即是多.html'">少即是多</button>
+        <button class="button" onclick="window.location.href='../4.4卡片分类/卡片分类.html'">卡片分类</button>
+    </div>
+
+    <script>
+        // 可以在这里添加JavaScript代码
+    </script>
+</body>
+</html>
